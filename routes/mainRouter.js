@@ -7,6 +7,12 @@ const accountController = require("../controllers/accountController");
 mainRouter.get("/", homeController.getHome);
 
 mainRouter.get("/sign-in", accountController.getSignIn);
+mainRouter.post("/sign-in",
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/"
+    })
+);
 
 mainRouter.get("/sign-up", accountController.getSignUp);
 mainRouter.post("/sign-up", accountController.postSignUp);
