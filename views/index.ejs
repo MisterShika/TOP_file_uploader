@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>File Storage</title>
 </head>
 <body>
-    Hello World
-    <div><a href="/sign-in">Sign In</a></div>
-    <div><a href="/sign-up">Sign Up</a></div>
     <% if (locals.authenticated && locals.authenticated == true) { %>
-        Logged In as <%= locals.email %>
-        <a href="/logout">Log Out</a>
+        <div>
+            Logged In as <%= locals.email %>
+            <a href="/logout">Log Out</a>
+            <div>
+                Data:
+                <%= JSON.stringify(locals) %>
+            </div>
+        </div>
+    <% } else { %>
+        <div><a href="/sign-in">Sign In</a></div>
+        <div><a href="/sign-up">Sign Up</a></div>
     <% } %>
 </body>
 </html>

@@ -19,3 +19,12 @@ model Session {
   data        String
   expiresAt   DateTime
 }
+
+model Folder {
+  id        String    @id @default(uuid())
+  name      String
+  path      String    @unique
+  createdAt DateTime  @default(now())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+}
