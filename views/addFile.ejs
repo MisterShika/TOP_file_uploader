@@ -7,9 +7,18 @@
 </head>
 <body>
     <h1>Add File</h1>
-    <form action="/add-file" method="POST" enctype="multipart/form-data">
-        <input type="file" name="avatar" />
-        <button type="submit">Add</button>
-    </form>
+    <% if (locals.authenticated && locals.authenticated == true) { %>
+        <form action="/files/add-file" method="POST" enctype="multipart/form-data">
+            <input type="file" name="theFile" />
+            <button type="submit">Add</button>
+        </form>
+        <div>
+            Data:
+            <%= JSON.stringify(locals) %>
+        </div>
+    <% } else { %>
+        <div><a href="/sign-in">Sign In</a></div>
+        <div><a href="/sign-up">Sign Up</a></div>
+    <% } %>
 </body>
 </html>
