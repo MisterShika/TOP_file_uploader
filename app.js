@@ -6,6 +6,7 @@ const session = require("express-session");
 const passport = require("passport");
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const { PrismaClient } = require('@prisma/client');
+const path = require('path');
 
 const mainRouter = require("./routes/mainRouter");
 const fileRouter = require("./routes/fileRouter");
@@ -39,6 +40,7 @@ app.use(passport.session());
 
 app.use("/", mainRouter);
 app.use("/files", fileRouter);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on http://localhost:${process.env.PORT}`);

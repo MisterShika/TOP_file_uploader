@@ -1,8 +1,17 @@
+const db = require("../db/queries");
+
 async function getHome (req, res) {
+    const userId = req.user?.id || null;
+    let folder;
+    if(userId){
+        folder = await db.getFoldersByUserId(userId) || null;
+    }
+
     res.render("index",{
-        userId: req.user?.id || null,
+        userId,
         email: req.user?.email || null,
         authenticated: req.isAuthenticated(),
+        folder
     });
 }
 

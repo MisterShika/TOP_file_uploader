@@ -13,6 +13,14 @@
             <div>
                 <a href="/files/add-file">Add File</a>
             </div>
+            <% if (locals.folder && locals.folder.length > 0) { %>
+                <div>
+                    <h2>Files</h2>
+                    <% locals.folder.forEach(item => { %>
+                        <a href="/<%= item.path %>"><%= item.name %></a>
+                    <% }) %>
+                </div>
+            <% } %>
             <div>
                 Data:
                 <%= JSON.stringify(locals) %>

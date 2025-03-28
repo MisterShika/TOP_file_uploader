@@ -31,6 +31,18 @@ async function postAddFile (req, res) {
     upload(req, res, (err) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+        const fileName = req.file.filename;
+        const fileExtension = path.extname(req.file.originalname);
+        const filePath = `uploads/${userId}/${fileName}${fileExtension}`;
+
+        fs.renameSync(
+            path.join(uploadPath, fileName),
+            path.join(uploadPath, fileName + fileExtension)
+        );
+
+        db.addFile(fileName, filePath, userId);
+        console.log(`Uploaded file: ${fileName}`);
+        console.log(`File extension: ${fileExtension}`);
         res.redirect("/");
     });
 }
