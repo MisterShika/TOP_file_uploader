@@ -3,6 +3,21 @@ const fs = require('fs');
 const path = require('path');
 const multer  = require('multer');
 
+async function postAddFolder (req, res) {
+    console.log("Post Add Folder!");
+    if(req.user){
+        const userId = req.user?.id || null;
+        const {folderName} = req.body;
+        const folderPath = `uploads/${userId}/${folderName}`;
+        fs.mkdir(folderPath, { recursive: true }, (err) => {
+            if (err) {
+                return res.status(500).send("Error creating folder.");
+            }
+            res.redirect("/");
+        });
+    }
+}
+
 async function getAddFile (req, res) {
     let folderExists = false;
     let userId;
@@ -48,6 +63,7 @@ async function postAddFile (req, res) {
 }
 
 module.exports = {
+    postAddFolder,
     getAddFile,
     postAddFile
 }
