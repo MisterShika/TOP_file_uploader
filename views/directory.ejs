@@ -6,6 +6,7 @@
     <title>File Storage</title>
 </head>
 <body>
+    Test
     <% if (locals.authenticated && locals.authenticated == true) { %>
         <div>
             Logged In as <%= locals.email %>
@@ -34,9 +35,6 @@
                 <%= JSON.stringify(locals) %>
             </div>
         </div>
-    <% } else { %>
-        <div><a href="/sign-in">Sign In</a></div>
-        <div><a href="/sign-up">Sign Up</a></div>
     <% } %>
 </body>
 </html>

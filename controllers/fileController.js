@@ -7,13 +7,25 @@ async function postAddFolder (req, res) {
     console.log("Post Add Folder!");
     if(req.user){
         const userId = req.user?.id || null;
-        const {folderName} = req.body;
-        const folderPath = `uploads/${userId}/${folderName}`;
-        fs.mkdir(folderPath, { recursive: true }, (err) => {
+        const {folderName, currentPath} = req.body;
+        const nestedPath = req.params[0] || "";
+        const folderPath = `uploads/${userId}/${nestedPath}/${folderName}`;
+        const newPath = path.join("uploads", userId, nestedPath, folderName);
+        const testPath = path.join(currentPath, folderName);
+
+        console.log(`Current Path: ${currentPath}`);
+
+        console.log(`Test Path: ${testPath}`);
+
+        console.log(`Old Path: ${folderPath}`);
+
+        console.log(`New Path: ${newPath}`);
+
+        fs.mkdir(testPath, { recursive: true }, (err) => {
             if (err) {
                 return res.status(500).send("Error creating folder.");
             }
-            res.redirect("/");
+            res.redirect(req.headers.referer || `/uploads/${userId}/${nestedPath}`);
         });
     }
 }
@@ -61,6 +73,8 @@ async function postAddFile (req, res) {
         res.redirect("/");
     });
 }
+
+
 
 module.exports = {
     postAddFolder,

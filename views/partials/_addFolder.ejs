@@ -1,4 +1,5 @@
 <form action="/files/add-folder" method="POST">
     <input type="text" name="folderName" id="folderName" placeholder="Enter folder name" />
+    <input type="hidden" name="currentPath" value="<%= currentPath %>" />
     <button type="submit">Add Folder</button>
 </form>

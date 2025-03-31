@@ -30,6 +30,8 @@ mainRouter.get("/logout", (req, res, next) => {
     });
 });
 
+mainRouter.get('/uploads/:userId/*', homeController.uploadNav);
+
 // mainRouter.get("/debug-session", (req, res) => {
 //     res.json({
 //       sessionID: req.sessionID,
