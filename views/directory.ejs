@@ -19,7 +19,7 @@
             <% if (locals.folders && locals.folders.length > 0) { %>
                 <div>
                     <% locals.folders.forEach(folder => { %>
-                       <a href="<%= folder.path %>"><%= folder.name %></a>
+                       <a href="/<%= currentPath %>/<%= folder.name %>"><%= folder.name %></a>
                     <% }) %>
                 </div>
             <% } %>
@@ -30,6 +30,11 @@
                     <% }) %>
                 </div>
             <% } %>
+            <% if (currentPath === `uploads/${userId}/`) { %>
+                <a href="http://localhost:3000/">Back</a>
+              <% } else { %>
+                <a href="/<%= currentPath.replace(/\/[^\/]+\/?$/, '') %>">Back</a>
+              <% } %>
             <div>
                 Data:
                 <%= JSON.stringify(locals) %>

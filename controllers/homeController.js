@@ -4,7 +4,6 @@ const fs = require("fs").promises;
 async function getHome(req, res) {
     const userId = req.user?.id || null;
     let folders = [];
-    let files;
 
     if (userId) {
         const folderPath = `uploads/${userId}/`;
@@ -35,37 +34,34 @@ async function getHome(req, res) {
 
 async function uploadNav (req, res) {
     const userId = req.user?.id || null;
-    const nestedPath = req.params[0]?.replace(`uploads/${userId}/`, '');
+    let currentPath;
+    let originalPath;
     let folders = [];
-    let files;
-    const currentPath = nestedPath
-    ? `uploads/${userId}/${nestedPath}`
-    : `uploads/${userId}/`;
 
     if (userId) {
-        const folderPath = `uploads/${userId}/${nestedPath}`;
-
+        originalPath = `uploads/${userId}/`;
+        currentPath = req.originalUrl.replace(/^\/+/, "");
+        console.log(currentPath);
         try {
-            const files = await fs.readdir(folderPath, { withFileTypes: true });
+            const files = await fs.readdir(currentPath, { withFileTypes: true });
             folders = files
-            .filter(file => file.isDirectory())
-            .map(dir => ({
-                name: dir.name,
-                path: `${nestedPath}/${dir.name}`
-            }));
+                .filter(file => file.isDirectory())
+                .map(dir => ({
+                    name: dir.name,
+                }));
         } catch (err) {
             console.error("Error reading directory:", err);
             return res.status(500).send("Error reading directory");
         }
-        // files = await db.getFoldersByUserId(userId) || null;
     }
+
+
 
     res.render("directory", {
         userId,
         authenticated: req.isAuthenticated(),
-        // files,
-        folders,
-        currentPath
+        currentPath,
+        folders
     });
 }
 
