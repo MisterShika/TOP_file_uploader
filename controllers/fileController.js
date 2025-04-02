@@ -9,17 +9,7 @@ async function postAddFolder (req, res) {
         const userId = req.user?.id || null;
         const {folderName, currentPath} = req.body;
         const nestedPath = req.params[0] || "";
-        const folderPath = `uploads/${userId}/${nestedPath}/${folderName}`;
-        const newPath = path.join("uploads", userId, nestedPath, folderName);
         const testPath = path.join(currentPath, folderName);
-
-        console.log(`Current Path: ${currentPath}`);
-
-        console.log(`Test Path: ${testPath}`);
-
-        console.log(`Old Path: ${folderPath}`);
-
-        console.log(`New Path: ${newPath}`);
 
         fs.mkdir(testPath, { recursive: true }, (err) => {
             if (err) {

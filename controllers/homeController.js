@@ -35,7 +35,7 @@ async function getHome(req, res) {
 
 async function uploadNav (req, res) {
     const userId = req.user?.id || null;
-    const nestedPath = req.params[0];
+    const nestedPath = req.params[0]?.replace(`uploads/${userId}/`, '');
     let folders = [];
     let files;
     const currentPath = nestedPath
@@ -48,11 +48,11 @@ async function uploadNav (req, res) {
         try {
             const files = await fs.readdir(folderPath, { withFileTypes: true });
             folders = files
-                .filter(file => file.isDirectory())
-                .map(dir => ({
-                    name: dir.name,
-                    path: `uploads/${userId}/${dir.name}`
-                }));
+            .filter(file => file.isDirectory())
+            .map(dir => ({
+                name: dir.name,
+                path: `${nestedPath}/${dir.name}`
+            }));
         } catch (err) {
             console.error("Error reading directory:", err);
             return res.status(500).send("Error reading directory");
