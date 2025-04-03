@@ -4,7 +4,6 @@ const path = require('path');
 const multer  = require('multer');
 
 async function postAddFolder (req, res) {
-    console.log("Post Add Folder!");
     if(req.user){
         const userId = req.user?.id || null;
         const {folderName, currentPath} = req.body;
@@ -16,6 +15,31 @@ async function postAddFolder (req, res) {
                 return res.status(500).send("Error creating folder.");
             }
             res.redirect(req.headers.referer || `/uploads/${userId}/${nestedPath}`);
+        });
+    }
+}
+
+async function postRenameFolder (req, res) {
+    if(req.user){
+        const {folderName, currentPath} = req.body;
+        console.log(`Folder Name: ${folderName}`);
+        console.log(`Current Path: ${currentPath}`);
+        const userId = req.user?.id || null;
+        const nestedPath = req.params[0] || "";
+
+        const parentDir = path.dirname(currentPath);
+        const newPath = path.join(parentDir, folderName);
+        
+        fs.rename(currentPath, newPath, (err) => {
+            if (err) {
+                console.error('Error renaming directory:', err);
+            } else {
+                console.log("Renaming...");
+                const parts = req.headers.referer.split('/');
+                parts[parts.length - 1] = folderName;
+                const updatedNestedPath = parts.join('/');
+                res.redirect(updatedNestedPath);
+            }
         });
     }
 }
@@ -68,6 +92,7 @@ async function postAddFile (req, res) {
 
 module.exports = {
     postAddFolder,
+    postRenameFolder,
     getAddFile,
     postAddFile
 }

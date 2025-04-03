@@ -34,14 +34,13 @@ async function getHome(req, res) {
 
 async function uploadNav (req, res) {
     const userId = req.user?.id || null;
+    const allDirectory = req.path.split('/');
+    const workingDirectory = allDirectory[allDirectory.length - 1];
     let currentPath;
-    let originalPath;
     let folders = [];
 
     if (userId) {
-        originalPath = `uploads/${userId}/`;
         currentPath = req.originalUrl.replace(/^\/+/, "");
-        console.log(currentPath);
         try {
             const files = await fs.readdir(currentPath, { withFileTypes: true });
             folders = files
@@ -55,13 +54,13 @@ async function uploadNav (req, res) {
         }
     }
 
-
-
     res.render("directory", {
         userId,
+        email: req.user?.email || null,
         authenticated: req.isAuthenticated(),
         currentPath,
-        folders
+        folders,
+        workingDirectory
     });
 }
 
