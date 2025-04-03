@@ -22,10 +22,6 @@ async function postAddFolder (req, res) {
 async function postRenameFolder (req, res) {
     if(req.user){
         const {folderName, currentPath} = req.body;
-        console.log(`Folder Name: ${folderName}`);
-        console.log(`Current Path: ${currentPath}`);
-        const userId = req.user?.id || null;
-        const nestedPath = req.params[0] || "";
 
         const parentDir = path.dirname(currentPath);
         const newPath = path.join(parentDir, folderName);
@@ -41,6 +37,13 @@ async function postRenameFolder (req, res) {
                 res.redirect(updatedNestedPath);
             }
         });
+    }
+}
+
+async function postDeleteFolder (req, res) {
+    if(req.user){
+        console.log("Post Delete");
+        res.redirect("/");
     }
 }
 
@@ -93,6 +96,7 @@ async function postAddFile (req, res) {
 module.exports = {
     postAddFolder,
     postRenameFolder,
+    postDeleteFolder,
     getAddFile,
     postAddFile
 }

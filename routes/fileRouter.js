@@ -13,4 +13,6 @@ fileRouter.post("/add-folder", fileController.postAddFolder);
 
 fileRouter.post("/rename-folder", fileController.postRenameFolder);
 
+fileRouter.post("/delete-folder", fileController.postDeleteFolder);
+
 module.exports = fileRouter;
