@@ -42,8 +42,20 @@ async function postRenameFolder (req, res) {
 
 async function postDeleteFolder (req, res) {
     if(req.user){
+        const {currentPath} = req.body;
         console.log("Post Delete");
-        res.redirect("/");
+        console.log(`Current Path ${currentPath}`);
+
+        fs.rm(currentPath, { recursive: true, force: true }, (err) => {
+            if (err) {
+                console.error('Error removing directory:', err);
+            } else {
+                let parts = req.headers.referer.split('/');
+                parts = parts.slice(0, -1);
+                const updatedPath = parts.join('/');
+                res.redirect(updatedPath);
+            }
+        });
     }
 }
 
