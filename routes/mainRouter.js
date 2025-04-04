@@ -29,6 +29,16 @@ mainRouter.get("/logout", (req, res, next) => {
     });
 });
 
+const path = require('path');
+const fs = require('fs');
+
+mainRouter.get('/uploads/:userId/*.:ext', (req, res) => {
+    const filePath = path.join(__dirname, '..', 'uploads', req.params.userId, req.params[0]) + '.' + req.params.ext;
+    console.log(filePath);
+    res.sendFile(filePath);
+});
+
 mainRouter.get('/uploads/:userId/*', homeController.uploadNav);
+
 
 module.exports = mainRouter;

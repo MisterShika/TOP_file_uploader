@@ -1,34 +1,42 @@
 const db = require("../db/queries");
 const fs = require("fs").promises;
+const path = require('path');
 
 async function getHome(req, res) {
     const userId = req.user?.id || null;
     let folders = [];
+    let files;
+    let currentPath;
 
     if (userId) {
-        const folderPath = `uploads/${userId}/`;
+        currentPath = `uploads/${userId}/`;
         try {
-            const files = await fs.readdir(folderPath, { withFileTypes: true });
+            files = await fs.readdir(currentPath, { withFileTypes: true });
             folders = files
                 .filter(file => file.isDirectory())
                 .map(dir => ({
                     name: dir.name,
                     path: `uploads/${userId}/${dir.name}`
                 }));
+            files = files
+                .filter(file => !file.isDirectory())
+                .map(file => ({
+                    name: file.name,
+                    path: path.join(currentPath, file.name).replace(/\\/g, '/'),
+                }));
         } catch (err) {
             console.error("Error reading directory:", err);
             return res.status(500).send("Error reading directory");
         }
-        files = await db.getFoldersByUserId(userId) || null;
     }
 
     res.render("index", {
         userId,
         email: req.user?.email || null,
         authenticated: req.isAuthenticated(),
-        files,
         folders,
-        currentPath: `uploads/${userId}/`
+        files,
+        currentPath
     });
 }
 
@@ -37,16 +45,23 @@ async function uploadNav (req, res) {
     const allDirectory = req.path.split('/');
     const workingDirectory = allDirectory[allDirectory.length - 1];
     let currentPath;
+    let files;
     let folders = [];
 
     if (userId) {
         currentPath = req.originalUrl.replace(/^\/+/, "");
         try {
-            const files = await fs.readdir(currentPath, { withFileTypes: true });
+            files = await fs.readdir(currentPath, { withFileTypes: true });
             folders = files
                 .filter(file => file.isDirectory())
                 .map(dir => ({
                     name: dir.name,
+                }));
+            files = files
+                .filter(file => !file.isDirectory())
+                .map(file => ({
+                    name: file.name,
+                    path: path.join(currentPath, file.name).replace(/\\/g, '/'),
                 }));
         } catch (err) {
             console.error("Error reading directory:", err);
@@ -60,6 +75,7 @@ async function uploadNav (req, res) {
         authenticated: req.isAuthenticated(),
         currentPath,
         folders,
+        files,
         workingDirectory
     });
 }

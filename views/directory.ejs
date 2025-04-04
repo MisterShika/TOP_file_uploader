@@ -19,6 +19,7 @@
             </div>
             <h2>My Files</h2>
             <% if (locals.folders && locals.folders.length > 0) { %>
+                <h3>Folders</h3>
                 <div>
                     <% locals.folders.forEach(folder => { %>
                        <a href="/<%= currentPath %>/<%= folder.name %>"><%= folder.name %></a>
@@ -26,6 +27,7 @@
                 </div>
             <% } %>
             <% if (locals.files && locals.files.length > 0) { %>
+                <h3>Files</h3>
                 <div>
                     <% locals.files.forEach(file => { %>
                         <a href="/<%= file.path %>"><%= file.name %></a>

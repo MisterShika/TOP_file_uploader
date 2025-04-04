@@ -69,7 +69,7 @@ async function postAddFile (req, res) {
             const targetPath = path.join(currentPath, file.originalname);
             fs.writeFile(targetPath, file.buffer, (err) => {
                 if (err) {
-                    console.error('Error removing directory:', err);
+                    console.error('Error Adding File:', err);
                 }else{
                     res.redirect(req.headers.referer);
                 }
