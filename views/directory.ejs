@@ -13,9 +13,9 @@
             <a href="/logout">Log Out</a>
             <div>
                 <%- include('partials/_addFolder', { currentPath: currentPath }) %>
+                <%- include('partials/_addFile', { currentPath: currentPath }) %>
                 <%- include('partials/_renameFolder', { workingDirectory: workingDirectory }) %>
                 <%- include('partials/_deleteFolder', { workingDirectory: workingDirectory }) %>
-                <a href="/files/add-file">Add File</a>
             </div>
             <h2>My Files</h2>
             <% if (locals.folders && locals.folders.length > 0) { %>

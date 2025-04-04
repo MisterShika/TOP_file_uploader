@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const { PrismaClient } = require("@prisma/client");
 const passport = require("passport");
 const mainRouter = Router();
 const homeController = require("../controllers/homeController");
@@ -31,13 +30,5 @@ mainRouter.get("/logout", (req, res, next) => {
 });
 
 mainRouter.get('/uploads/:userId/*', homeController.uploadNav);
-
-// mainRouter.get("/debug-session", (req, res) => {
-//     res.json({
-//       sessionID: req.sessionID,
-//       user: req.user || null,
-//       authenticated: req.isAuthenticated(),
-//     });
-//   });
 
 module.exports = mainRouter;
