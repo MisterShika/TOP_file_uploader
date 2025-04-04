@@ -4,6 +4,8 @@ const fileController = require("../controllers/fileController");
 
 fileRouter.post("/add-file", fileController.postAddFile);
 
+fileRouter.post("/delete-file", fileController.postDeleteFile);
+
 fileRouter.post("/add-folder", fileController.postAddFolder);
 
 fileRouter.post("/rename-folder", fileController.postRenameFolder);

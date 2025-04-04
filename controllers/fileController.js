@@ -78,11 +78,23 @@ async function postAddFile (req, res) {
     }
 }
 
-
+async function postDeleteFile (req, res) {
+    const {fileName, currentPath} = req.body;
+    console.log(`Deleting: ${fileName}`);
+    console.log(`Path: ${currentPath}`);
+    fs.unlink(fileName, (err) => {
+        if (err) {
+            console.error('Error deleting file:', err);
+        }
+        console.log('File deleted successfully');
+        res.redirect(req.headers.referer);
+    });
+}
 
 module.exports = {
     postAddFolder,
     postRenameFolder,
     postDeleteFolder,
-    postAddFile
+    postAddFile,
+    postDeleteFile
 }

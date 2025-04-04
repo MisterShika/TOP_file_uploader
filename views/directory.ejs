@@ -31,6 +31,7 @@
                 <div>
                     <% locals.files.forEach(file => { %>
                         <a href="/<%= file.path %>"><%= file.name %></a>
+                        <%- include('partials/_deleteFile', { currentPath: currentPath, fileName: file.path}) %>
                     <% }) %>
                 </div>
             <% } %>
